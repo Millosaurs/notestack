@@ -1,0 +1,21 @@
+{
+    "name": "@notestack/auth",
+    "type": "module",
+    "exports": {
+        ".": {
+            "default": "./src/index.ts"
+        },
+        "./client": {
+            "default": "./src/client.ts"
+        }
+    },
+    "dependencies": {
+        "better-auth": "catalog:",
+        "@notestack/db": "workspace:*",
+        "@notestack/env": "workspace:*"
+    },
+    "devDependencies": {
+        "@notestack/config": "workspace:*",
+        "typescript": "catalog:"
+    }
+}
