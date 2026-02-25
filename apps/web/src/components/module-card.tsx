@@ -63,8 +63,15 @@ export function ModuleCard({ module }: ModuleCardProps) {
 		// Convert Google Drive view link to direct download link
 		const downloadUrl = convertToDownloadUrl(note.pdfUrl);
 
-		// Open in new tab to trigger download
-		window.open(downloadUrl, "_blank");
+		// Use anchor element with download attribute to force download on mobile
+		const link = document.createElement("a");
+		link.href = downloadUrl;
+		link.download = `${note.name}.pdf`;
+		link.target = "_blank";
+		link.rel = "noopener noreferrer";
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
 	};
 
 	const handlePreview = (note: Note) => {

@@ -71,8 +71,16 @@ export function PdfViewer({
 
 	const handleDownload = useCallback(() => {
 		const downloadUrl = convertToDownloadUrl(pdfUrl);
-		window.open(downloadUrl, "_blank");
-	}, [pdfUrl]);
+		// Use anchor element with download attribute to force download on mobile
+		const link = document.createElement("a");
+		link.href = downloadUrl;
+		link.download = `${title}.pdf`;
+		link.target = "_blank";
+		link.rel = "noopener noreferrer";
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+	}, [pdfUrl, title]);
 
 	// Reset state when dialog opens
 	const handleOpenChange = useCallback(
