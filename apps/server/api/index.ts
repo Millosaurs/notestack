@@ -1,7 +1,7 @@
 import { handle } from "hono/vercel";
 
 // eslint-disable-next-line ts/ban-ts-comment
-// @ts-expect-error
+// @ts-ignore
 import index from "../dist/index.mjs";
 
 export const runtime = "edge";
