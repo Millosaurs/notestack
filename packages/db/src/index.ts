@@ -1,15 +1,15 @@
-import { createClient } from "@libsql/client/http";
 import { env } from "@notestack/env/server";
-import { drizzle } from "drizzle-orm/libsql";
+import { drizzle } from "drizzle-orm/libsql/http";
 
 import * as schema from "./schema";
 
-// Use HTTP-only client for Vercel/serverless compatibility (no native bindings needed)
-const client = createClient({
-	url: env.DATABASE_URL,
-	authToken: env.DATABASE_AUTH_TOKEN,
+// Use HTTP-only drizzle driver for Vercel/serverless compatibility (no native bindings needed)
+export const db = drizzle({
+	connection: {
+		url: env.DATABASE_URL,
+		authToken: env.DATABASE_AUTH_TOKEN,
+	},
+	schema,
 });
-
-export const db = drizzle({ client, schema });
 
 export { schema };
