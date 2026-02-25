@@ -59,3 +59,47 @@ export const verifications = sqliteTable("verification", {
 	createdAt: integer("createdAt", { mode: "timestamp" }),
 	updatedAt: integer("updatedAt", { mode: "timestamp" }),
 });
+
+// ============ NOTESTACK SCHEMA ============
+
+export const subjects = sqliteTable("subject", {
+	id: text("id").primaryKey(),
+	code: text("code").notNull().unique(), // e.g., "CS101"
+	name: text("name").notNull(), // e.g., "Data Structures"
+	description: text("description"),
+	createdAt: integer("createdAt", { mode: "timestamp" }).notNull(),
+	updatedAt: integer("updatedAt", { mode: "timestamp" }).notNull(),
+	createdBy: text("createdBy")
+		.notNull()
+		.references(() => users.id),
+});
+
+export const modules = sqliteTable("module", {
+	id: text("id").primaryKey(),
+	moduleNumber: integer("moduleNumber").notNull(), // e.g., 1, 2, 3
+	name: text("name").notNull(), // e.g., "Arrays and Linked Lists"
+	description: text("description"),
+	subjectId: text("subjectId")
+		.notNull()
+		.references(() => subjects.id, { onDelete: "cascade" }),
+	createdAt: integer("createdAt", { mode: "timestamp" }).notNull(),
+	updatedAt: integer("updatedAt", { mode: "timestamp" }).notNull(),
+	createdBy: text("createdBy")
+		.notNull()
+		.references(() => users.id),
+});
+
+export const notes = sqliteTable("note", {
+	id: text("id").primaryKey(),
+	name: text("name").notNull(), // e.g., "Lecture Notes Week 1"
+	pdfUrl: text("pdfUrl").notNull(), // Google Drive or direct PDF link
+	moduleId: text("moduleId")
+		.notNull()
+		.references(() => modules.id, { onDelete: "cascade" }),
+	downloadCount: integer("downloadCount").notNull().default(0),
+	createdAt: integer("createdAt", { mode: "timestamp" }).notNull(),
+	updatedAt: integer("updatedAt", { mode: "timestamp" }).notNull(),
+	createdBy: text("createdBy")
+		.notNull()
+		.references(() => users.id),
+});

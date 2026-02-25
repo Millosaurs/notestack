@@ -15,7 +15,9 @@ export type CreateContextOptions = {
 export async function createContext({ context }: CreateContextOptions) {
 	const user = context.get("user");
 	const session = context.get("session");
-	return { user, session };
+	// Extract headers for use with Better Auth internal APIs
+	const headers = context.req.raw.headers;
+	return { user, session, headers };
 }
 
 export type Context = Awaited<ReturnType<typeof createContext>>;

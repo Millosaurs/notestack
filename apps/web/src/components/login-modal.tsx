@@ -20,6 +20,23 @@ interface LoginModalProps {
 }
 
 export function LoginModal({ open, onOpenChange }: LoginModalProps) {
+	const handleOpenChange = (
+		newOpen: boolean,
+		eventDetails?: { reason?: string; cancel?: () => void },
+	) => {
+		// Prevent closing the modal by clicking outside or pressing ESC
+		// Only allow closing programmatically (e.g., after successful login)
+		if (
+			!newOpen &&
+			eventDetails?.reason &&
+			(eventDetails.reason === "escape-key" ||
+				eventDetails.reason === "outside-press")
+		) {
+			eventDetails.cancel?.();
+			return;
+		}
+		onOpenChange(newOpen);
+	};
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
@@ -51,7 +68,7 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
 	};
 
 	return (
-		<Dialog open={open} onOpenChange={onOpenChange}>
+		<Dialog open={open} onOpenChange={handleOpenChange}>
 			<DialogContent showCloseButton={false} className="max-w-sm">
 				<DialogHeader>
 					<DialogTitle>Sign in to Notestack</DialogTitle>
