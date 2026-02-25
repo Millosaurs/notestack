@@ -1,0 +1,3 @@
+{
+  "extends": "@notestack/config/tsconfig.base.json"
+}
